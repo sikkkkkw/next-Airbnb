@@ -6,12 +6,13 @@ import Image from "next/image"
 import { useState } from "react"
 
 export function SelctetCategory(){
-    const [selectedCategory, setSelectredCategory]= useState<string|null>(null);
+    const [selectedCategory, setSelectredCategory]= useState<string|undefined>(undefined);
     return(
         <div className=" grid grid-cols-4 gap-8 mt-10 w-3/5 mx-auto mb-36">
+            <input type="hidden" name="categoryName" value={selectedCategory as string} />
             {categoryItems.map((item)=>(
                 <div key={item.id} className="cursor-pointer">
-                    <Card className={selectedCategory === item.name?'border-primary':""}
+                    <Card className={selectedCategory === item.name?'border-primary border-2':""}
                     onClick={()=>setSelectredCategory(item.name)}>
                         <CardHeader>
                             <Image

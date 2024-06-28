@@ -29,9 +29,15 @@ model Home{
   description String?
   guests String?
   bedrooms String?
+  bathrooms String?
   conutry String?
   photo String?
   price Int?
+  categoryName String?
+
+  addedCategory Boolean @default(false)
+  addedDescription Boolean @default(false)
+  addedLoaction Boolean @default(false)
   
   createdAT DateTime @default(now())
   User User? @relation(fields: [userId],references: [id])
