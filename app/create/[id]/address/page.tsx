@@ -1,9 +1,22 @@
+"use client"
+
+import { CreatioBottomBar } from "@/app/components/CreationBottomBer";
 import { useCountries } from "@/app/lib/getCountries";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 
 
 export default function AddressRoutw(){
-    const {getAllCountries } = useCountries()
+    const {getAllCountries } = useCountries();
+    const [locationValue, setLocationValue]= useState("");
+
+    const LazyMap =dynamic(() => import('@/app/components/Map'),{
+        ssr: false,
+        loading: ()=> <Skeleton className="h-[50vh] w-full "/>
+    })
 
     return(
         <>
@@ -12,9 +25,10 @@ export default function AddressRoutw(){
                     Where is your Home located?
                 </h2>
             </div>
-            <form className="w-3/5 mx-auto">
+            <form>
+            <div className="w-3/5 mx-auto mb-36">
                 <div className="mb-5">
-                    <Select required>
+                    <Select required onValueChange={(value)=> setLocationValue(value)}>
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select a Country"/>
                         </SelectTrigger>
@@ -32,6 +46,9 @@ export default function AddressRoutw(){
                         </SelectContent>
                     </Select>
                 </div>
+                   <LazyMap locationValue={locationValue} />                 
+                </div>
+                <CreatioBottomBar/>
             </form>
         </>
     )
