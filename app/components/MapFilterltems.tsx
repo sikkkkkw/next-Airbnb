@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Italiana } from "next/font/google";
 
 export function Mapfilterltems(){
     const searchParams =useSearchParams();

@@ -12,8 +12,8 @@ export async function createAirbnbHome({userId}:{userId:string}){
         orderBy:{
             createdAT:"desc",
         }
-    })
-    // console.log(data);
+    });
+    // console.log(userId);
     
     if(data === null){
         const data = await prisma.home.create({
@@ -21,14 +21,22 @@ export async function createAirbnbHome({userId}:{userId:string}){
                 userId: userId,
             }
         });
-        
-        
         return redirect(`/create/${data.id}/structure`);
     }else if(!data.addedCategory && !data.addedDescription && !data.addedLoaction){
         return redirect(`/create/${data.id}/structure`);
     }else if(data.addedCategory &&!data.addedDescription){
         return redirect(`/create/${data.id}/description`);
+    }else if(data.addedCategory && data.addedDescription && !data.addedLoaction){
+        return redirect(`/create/${data.id}/address`);
+    }else if(data.addedCategory && data.addedDescription && data.addedLoaction){
+        const data = await prisma.home.create({
+            data: {
+                userId: userId,
+            }
+        });
+        return redirect(`/create/${data.id}/structure`);
     }
+    
 }
 export async function createCategoryPage(formData:FormData) {
     const categoryName =formData.get('categoryName') as string;
@@ -75,4 +83,19 @@ export async function CreateDescription(formData:FormData) {
         }
     });
     return redirect(`/create/${homeId}/address`)
+}
+
+export async function createLocation(formData:FormData) {
+    const homeId = formData.get('homeId') as string;
+    const countryValue = formData.get("countryValue") as string;
+    const data = await prisma.home.update({
+        where:{
+            id: homeId,
+        },
+        data:{
+            addedLoaction:true,
+            conutry:countryValue,
+        }
+    })
+    return redirect("/");
 }
